@@ -6,35 +6,15 @@ from src.rag.vector_store import load_chunks, SentenceTransformer, create_collec
 import os
 from dotenv import load_dotenv
 from groq import Groq
+from app.config import BASE_DIR
+from src.MagicalKenya.Parser import RAW_DIR, PARSED_DIR
+from src.rag.chunking import JSON_DIR, OUTPUT_PATH
+from src.rag.vector_store import CHUNKS_PATH, VECTOR_DB_DIR, COLLECTION_NAME, EMBEDDING_MODEL
 from src.rag.rag import answer_question
-
-
-#Base DIR for all files
-BASE_DIR = Path(__file__).resolve().parent
-
-#Directories used in parsing
-RAW_DIR = BASE_DIR / "Data" / "raw"
-PARSED_DIR = BASE_DIR / "Data" /"processed" / "json"
-#make dir if not exist
-BASE_DIR.mkdir(parents = True, exist_ok = True)
-RAW_DIR.mkdir(parents = True, exist_ok = True)
-PARSED_DIR.mkdir(parents = True, exist_ok = True)
-
-#Directories used in chunking
-JSON_DIR = BASE_DIR / "Data" / "processed" / "json"
-OUTPUT_PATH = BASE_DIR / "Data" / "processed" / "chunks" / "chunks.jsonl"
-
-# Used on vectore_store
-CHUNKS_PATH = BASE_DIR/ "Data" / "processed" / "chunks" / "chunks.jsonl" 
-VECTOR_DB_DIR = BASE_DIR / "Data" / "vector-store"
-
-COLLECTION_NAME = "travel_africa_kenya_destinations"
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-
 
 def main():
     
-    #Parsing downloaded html files into json
+    #(MAGICAL KENYA) Scraping/Parsing downloaded html files into json
     for file_path in RAW_DIR.glob("*.html"):
         
         print(f"Parsing: {file_path}")
@@ -48,7 +28,7 @@ def main():
             
         print(f"Saved: {output_file}")  
         
-    #Chunking parsed json files into word and semantic based searching 
+    #(MAGICAL KENYA) Chunking parsed json files into word and semantic based chunking
     documents = load_documents(JSON_DIR)
     
     all_chunks = []
@@ -63,6 +43,13 @@ def main():
     print(f"Documents processed: {len(documents)}")
     print(f"Chunks created: {len(all_chunks)}")
     print(f"saved to: {OUTPUT_PATH}")
+    
+    
+    #(KWS) Scraping/parsing downloaded .html kws files into json
+    
+    
+    #(KWS) Chunking parsed json files into word and semantic based chunking
+    
     
     #STORING CREATED CHUNKS INTO A VECTORDB AND DEFINING HOW TO SEARCH THE DATABASE
     chunks = load_chunks(CHUNKS_PATH)
