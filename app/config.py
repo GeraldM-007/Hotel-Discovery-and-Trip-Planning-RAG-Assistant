@@ -1,8 +1,10 @@
+from pathlib import Path
+
 #user agent to identify where the request is coming from(not a bot)
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
 
-#number of pages to scrape data from
-pages = 15
+#Base DIR for all files
+BASE_DIR = Path(__file__).resolve().parents[1]
 
 DESTINATIONS = [
     {
