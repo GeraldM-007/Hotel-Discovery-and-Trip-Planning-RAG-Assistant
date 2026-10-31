@@ -4,10 +4,10 @@ from pathlib import Path
 import chromadb
 from sentence_transformers import SentenceTransformer #loads the embedding model and generates vectors
 from typing import Any
+from app.config import BASE_DIR
 
-BASE_DIR = Path(__file__).resolve().parents[1]
-CHUNKS_PATH = BASE_DIR/ "tests" / "data" / "processed" / "chunks" / "chunks.jsonl" 
-VECTOR_DB_DIR = BASE_DIR / "tests" / "Data" / "vector-store2"
+CHUNKS_PATH = BASE_DIR/ "Data" / "processed" / "chunks" / "magical_kenya_chunks.jsonl" 
+VECTOR_DB_DIR = BASE_DIR / "Data" / "vector-store"
 
 COLLECTION_NAME = "travel_africa_kenya_destinations"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
