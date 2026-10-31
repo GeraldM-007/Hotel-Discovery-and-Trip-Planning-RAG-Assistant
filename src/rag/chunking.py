@@ -1,6 +1,10 @@
 import json
 import re
 from pathlib import Path
+from app.config import BASE_DIR
+
+JSON_DIR = BASE_DIR / "Data" / "processed" / "json"
+OUTPUT_PATH = BASE_DIR / "Data" / "processed" / "chunks" / "magical_kenya_chunks.jsonl"
 
 
 # Read all parsed JSON documents
