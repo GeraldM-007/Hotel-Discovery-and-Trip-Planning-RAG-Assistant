@@ -5,14 +5,14 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request  
 from fastapi.middleware.cors import CORSMiddleware 
-from groq import Groq 
+from openai import OpenAI
 from pydantic import BaseModel, Field #defines and validates request and response data
 from sentence_transformers import SentenceTransformer 
 from fastapi.staticfiles import StaticFiles
-from src.rag.rag import answer_question
+from src.rag.rag import answer_question, NVIDIA_BASE_URL
 from src.rag.vector_store import create_collection
+from app.config import BASE_DIR
 
-BASE_DIR = Path(__file__).resolve().parent
 VECTOR_DB_DIR = BASE_DIR / "Data" / "vector-store"
 FRONTEND_DIR = BASE_DIR / "frontend"
 
@@ -24,9 +24,9 @@ EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 async def lifespan(app: FastAPI):
     load_dotenv(BASE_DIR / ".env") 
     #valiate that the api key exists
-    api_key = os.getenv("GROQ_API_KEY")
+    api_key = os.getenv("NVIDIA_API_KEY")
     if not api_key:
-        raise RuntimeError("GROQ_API_KEY not found!")
+        raise RuntimeError("NVIDIA_API_KEY not found!")
     
     #app.state lets different endpoints access a shared application resources without loading the model for every request
     #load the embedding model into memory and store into FastAPI application state
@@ -40,7 +40,7 @@ async def lifespan(app: FastAPI):
         raise RuntimeError(f"Vector store at {VECTOR_DB_DIR} is empty.")
     
     #initialize the groq client
-    app.state.groq = Groq(api_key=api_key)
+    app.state.nvidia_client = OpenAI(base_url=NVIDIA_BASE_URL, api_key=api_key)
     
     yield 
 
@@ -96,7 +96,7 @@ def ask(body: AskRequest, request: Request):
             question=question,
             collection=request.app.state.collection,
             embedding_model=request.app.state.embedding_model,
-            groq_client=request.app.state.groq,
+            nvidia_client=request.app.state.nvidia_client,
             n_results=body.n_results,
         )
     except ValueError as exc:  # raised by answer_question for bad input

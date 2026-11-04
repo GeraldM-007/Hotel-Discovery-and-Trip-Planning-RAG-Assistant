@@ -2,6 +2,15 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 import json
 import hashlib
+from app.config import BASE_DIR
+
+#Directories used in parsing
+RAW_DIR = BASE_DIR / "Data" / "raw"
+PARSED_DIR = BASE_DIR / "Data" /"processed" / "json"
+#make dir if not exist
+BASE_DIR.mkdir(parents = True, exist_ok = True)
+RAW_DIR.mkdir(parents = True, exist_ok = True)
+PARSED_DIR.mkdir(parents = True, exist_ok = True)
 
 
 #create a deterministic file ID from the filename using sha256 algorithm
