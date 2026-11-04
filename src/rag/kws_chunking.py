@@ -488,33 +488,3 @@ def check_chunks(chunks, documents, chunk_size:int=300, overlap:int=50):
             problems.append(f"{chunk['chunk_id']}: {chunk['word_count']} words")
 
     return problems
-
-
-def main():
-
-    documents = load_kws_documents(KWS_JSON_DIR)
-
-    if not documents:
-        print(f"No KWS documents found in {KWS_JSON_DIR}")
-        print("Run scrapper.py first.")
-        return
-
-    chunks, common_keys = create_kws_chunks(documents)
-
-    save_chunks(chunks, KWS_CHUNKS_PATH)
-
-    print(f"Documents processed: {len(documents)}")
-    print(f"Lines moved to '{COMMON_DESTINATION}': {len(common_keys)}")
-    print(f"Chunks created: {len(chunks)}")
-    print(f"Saved to: {KWS_CHUNKS_PATH}")
-
-    problems = check_chunks(chunks, documents)
-
-    if problems:
-        print("\nCHECK:")
-        for problem in problems:
-            print(f"  {problem}")
-
-
-if __name__ == "__main__":
-    main()
