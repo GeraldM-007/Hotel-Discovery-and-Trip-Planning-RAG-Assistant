@@ -9,8 +9,8 @@ __pycache__/
 __init__.py
 
 #ignore uv files
-uv.lock
-pyproject.toml
+#uv.lock
+#pyproject.toml
 
 #raw files
 raw/
