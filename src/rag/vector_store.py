@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer #loads the embedding model
 from typing import Any
 from app.config import BASE_DIR
 
-CHUNKS_PATH = BASE_DIR/ "Data" / "processed" / "chunks" / "magical_kenya_chunks.jsonl" 
+CHUNKS_PATH = BASE_DIR/ "Data" / "processed" / "chunks" / "magical_kenya_chunks.jsonl"
 VECTOR_DB_DIR = BASE_DIR / "Data" / "vector-store"
 
 COLLECTION_NAME = "travel_africa_kenya_destinations"
