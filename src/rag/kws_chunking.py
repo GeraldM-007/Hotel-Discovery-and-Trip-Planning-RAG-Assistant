@@ -491,6 +491,7 @@ def check_chunks(chunks, documents, chunk_size:int=300, overlap:int=50):
 
 
 def main():
+
     documents = load_kws_documents(KWS_JSON_DIR)
 
     if not documents:
