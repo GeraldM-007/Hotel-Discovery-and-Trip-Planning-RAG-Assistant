@@ -9,10 +9,9 @@ from openai import OpenAI
 from pydantic import BaseModel, Field #defines and validates request and response data
 from sentence_transformers import SentenceTransformer 
 from fastapi.staticfiles import StaticFiles
-from src.rag.kws_rag import answer_question
+from src.rag.rag import answer_question, NVIDIA_BASE_URL
 from src.rag.vector_store import create_collection
 from app.config import BASE_DIR
-from src.rag.kws_rag import NVIDIA_BASE_URL
 
 VECTOR_DB_DIR = BASE_DIR / "Data" / "vector-store"
 FRONTEND_DIR = BASE_DIR / "frontend"
