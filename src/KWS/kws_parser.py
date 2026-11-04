@@ -7,7 +7,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 RAW_KWS_HTML_DIR = BASE_DIR / "TravelAfricaRAGProject" / "Data" / "kws_raw"
-PROCESSED_KWS_HTML_DIR = BASE_DIR / "TravelAfricaRAGProject" / "Data" / "kws_processed" / "json"
+KWS_JSON_DIR = BASE_DIR / "TravelAfricaRAGProject" / "Data" / "kws_processed" / "json"
 
 # create a deterministic file ID from the filename using sha256
 def create_document_id(filename: str):
@@ -298,7 +298,7 @@ def extract_payment_url(main):
 
 
 # Create a .json file for each raw html file
-def parse_html(file_path: Path):
+def kws_parse_html(file_path: Path):
     html = file_path.read_text(encoding="utf-8", errors="ignore")
 
     soup = BeautifulSoup(html, "lxml")
@@ -367,49 +367,3 @@ def check_document(document):
 
     return problems
 
-
-def main():
-    html_files = sorted(RAW_KWS_HTML_DIR.glob("*.html"))
-
-    if not html_files:
-        print(f"No .html files found in {RAW_KWS_HTML_DIR}")
-        return
-    
-    #create processed dir if does not exist
-    PROCESSED_KWS_HTML_DIR.mkdir(parents=True, exist_ok=True)
-
-    pages_with_problems = []
-
-    for file_path in html_files:
-        print(f"Scraping: {file_path}")
-
-        try:
-            document = parse_html(file_path)
-        except Exception as error:
-            print(f"  FAILED: {error}")
-            pages_with_problems.append((file_path.name, [f"failed: {error}"]))
-            continue
-
-        output_file = PROCESSED_KWS_HTML_DIR / f"{file_path.stem}.json"
-
-        with output_file.open("w", encoding="utf-8") as f:
-            json.dump(document, f, ensure_ascii=False, indent=2)
-
-        print(f"Saved: {output_file}")
-        print(f"  {document['park_name']}: {len(document['elements'])} elements, {len(document['rates'])} rates")
-
-        problems = check_document(document)
-
-        if problems:
-            print(f"  CHECK: {'; '.join(problems)}")
-            pages_with_problems.append((file_path.name, problems))
-
-    print(f"\nPages scraped: {len(html_files)}")
-    print(f"Pages to check: {len(pages_with_problems)}")
-
-    for name, problems in pages_with_problems:
-        print(f"  {name}: {'; '.join(problems)}")
-
-
-if __name__ == "__main__":
-    main()
