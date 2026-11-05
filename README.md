@@ -14,7 +14,7 @@ A Retrieval-Augmented Generation (RAG) application for discovering hotels, desti
 
 The project ingests content from official tourism and wildlife websites, parses it into structured records, chunks it into retrievable segments, embeds those chunks using a sentence transformer, and stores them in a vector database. When a user asks a question, the system retrieves the most relevant chunks and passes them to a model for answer generation.
 
-This repository includes:
+This project includes:
 - A Python-based knowledge pipeline
 - A RAG retrieval layer with ChromaDB
 - A FastAPI backend
@@ -65,13 +65,17 @@ Hotel-Discovery-and-Trip-Planning-RAG-Assistant/
 7. The most relevant chunks are sent to a model alongside the user question.
 8. The model answers using only the retrieved context, with source references returned to the frontend.
 
-## Technology
+## Tech Stack
 
-- Python 3.10+
-- FastAPI and Uvicorn
-- SentenceTransformers (`sentence-transformers/all-MiniLM-L6-v2`)
-- An OpenAI-compatible NVIDIA model API
-- HTML, CSS, and JavaScript frontend
+- **Python** - data processing and backend application
+- **FastAPI** - HTTP API and frontend serving
+- **Uvicorn** - ASGI server
+- **ChromaDB** - persistent vector storage and similarity search
+- **Sentence Transformers** - text embeddings
+- **NVIDIA API** - language-model answer generation through an OpenAI-compatible client
+- **HTML parsing tools** - extraction of structured content from downloaded pages
+- **JavaScript, HTML, and CSS** - browser-based user interface
+- **JSON and JSONL** - processed documents and chunks
 
 ## Setup
 
@@ -110,8 +114,11 @@ uv run python RawPageDownload.py
 ```bash
 uv run python PageDownload.py
 ```
+## Configuration
 
-Then
+- `NVIDIA_API_KEY` - required for model access.
+- The embedding model, vector-store path, collection name, and source-data paths are configured in the project code.
+
 Run the pipeline:
 
 ```bash
@@ -120,9 +127,11 @@ uv run python main.py
 
 The pipeline parses available HTML, creates document chunks, and builds or updates the vector store. It also starts a command-line question loop when processing completes. Type `exit` or `quit` to leave it.
 
-> The API server expects a populated vector store. If the required source files have not been processed, the server may fail to start because the collection is empty.
+<img width="2202" height="962" alt="image" src="https://github.com/user-attachments/assets/cd4ad321-e8b0-4f42-bbd4-3292e14f77ae" />
+
 
 ## Run the Web Application
+> The API server expects a populated vector store. If the required source files have not been processed, the server may fail to start because the collection is empty.
 
 Start the FastAPI server:
 
@@ -132,7 +141,15 @@ uv run python server.py
 
 Open the application at [http://127.0.0.1:8080](http://127.0.0.1:8080).
 
+<img width="2529" height="1191" alt="image" src="https://github.com/user-attachments/assets/ffacd4a6-ef52-4290-a19d-ad0215c60e21" />
+
 FastAPI's interactive API documentation is available at [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs).
+
+<img width="1917" height="1047" alt="image" src="https://github.com/user-attachments/assets/84c0ee12-c081-4d68-951f-98fd77c9cbd3" />
+
+<img width="1181" height="1051" alt="image" src="https://github.com/user-attachments/assets/6851e47b-80b2-45ab-83a4-c108c8194fb6" />
+
+<img width="1185" height="1390" alt="image" src="https://github.com/user-attachments/assets/a9da50f9-7aef-4d38-9b93-c53141eed96f" />
 
 ## API
 
@@ -141,12 +158,7 @@ FastAPI's interactive API documentation is available at [http://127.0.0.1:8080/d
 ```http
 GET /api/health
 ```
-
-Example:
-
-```bash
-curl http://127.0.0.1:8080/api/health
-```
+<img width="2032" height="400" alt="image" src="https://github.com/user-attachments/assets/3a23dd46-fa73-4a89-8d7b-127afa66a040" />
 
 ### Ask a question
 
@@ -165,11 +177,13 @@ curl -X POST http://127.0.0.1:8080/api/ask \
     "n_results": 5
   }'
 ```
+<img width="2456" height="536" alt="image" src="https://github.com/user-attachments/assets/f49f767e-3762-42f4-8413-db1f0bb593cd" />
+
 
 The response contains an `answer` and a list of `sources`. Each source may include a reference, destination, section, source URL, and retrieval distance.
 
-## Configuration
+## Conclusion
 
-- `NVIDIA_API_KEY` — required for model access.
-- The embedding model, vector-store path, collection name, and source-data paths are configured in the project code.
+The project demonstrates how retrieval-augmented generation can be leveraged to make travel information easier to find and use. Since answers depend on the locally collected source data, keep that data up to date and confirm time-sensitive details—such as park fees and entry rules—with the relevant official sources before travelling.
+
 
