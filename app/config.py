@@ -6,6 +6,9 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
 #Base DIR for all files
 BASE_DIR = Path(__file__).resolve().parents[1]
 
+#Kws accommodations base url
+KWS_ACCOMMODATIONS_LISTING_URL = "https://reservations.kws.go.ke/mbugani-homes"
+
 DESTINATIONS = [
     {
         "name": "Diani",
